@@ -52,7 +52,7 @@ export const Modal: React.FC<IModal> = ({ configId }) => {
               {configId === "deleteModal" && (
                 <>
                   <Button configId="deleteNotes" onClick={() => {
-                    if (currentId) {
+                    if (currentId) {                  
                       dispatch(deleteNote(currentId))
                     }
                     dispatch(ToggleModal({ currentId: null, modalId: null }))

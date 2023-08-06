@@ -105,9 +105,27 @@ const NotesReducer = (
       };
     case NOTE_DELETE_ONE:
       const deleted = { ...state };
-      if (action.payload && deleted.notes) {
+      if (
+        action.payload &&
+        deleted.notes &&
+        deleted.archive &&
+        deleted.unarchive &&
+        deleted.stats
+      ) {
+        const finded = deleted.notes[action.payload];
         delete deleted.notes[action.payload];
+        delete deleted.archive[action.payload];
+        delete deleted.unarchive[action.payload];
         deleted.id = null;
+
+        if (deleted.stats[finded.category].archive && finded.archive) {
+          let count = --deleted.stats[finded.category].archive;
+          deleted.stats[finded.category].archive = count;
+        }
+        if (deleted.stats[finded.category].unarchive && !finded.archive) {
+          let count = --deleted.stats[finded.category].unarchive;
+          deleted.stats[finded.category].unarchive = count;
+        }
         return deleted;
       }
       return state;
